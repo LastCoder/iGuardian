@@ -121,6 +121,7 @@ namespace iGuardian
                 /*new Action(ctx => {
                     if (!startup)
                     {
+                        Log("We are switching weapons 2 times to log the current weapon type; this is not an error if it only switches 2 times!");
                         Primary = BuddyGw.Me.Inventory.CurrentWeaponType;
                         BuddyGw.Me.SwitchWeapons();
                         Secondary = BuddyGw.Me.Inventory.CurrentWeaponType;
@@ -145,7 +146,7 @@ namespace iGuardian
                 // Sword pull
                 new CreateSpellBehavior("Flashing Blade"),
                 // Regular walk 
-                Movement.MoveIntoRangeBehavior(200),
+                Movement.MoveIntoRangeBehavior(50f),
                 // Instigate combat
                 GuardianCombat()
                 );
