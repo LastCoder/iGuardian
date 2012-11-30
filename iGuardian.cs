@@ -118,7 +118,7 @@ namespace iGuardian
         {
             return new PrioritySelector(
                 // Simple, but ugly, run-once action
-                new Action(ctx => {
+                /*new Action(ctx => {
                     if (!startup)
                     {
                         Primary = BuddyGw.Me.Inventory.CurrentWeaponType;
@@ -133,9 +133,9 @@ namespace iGuardian
 
                         startup = true;
                     } 
-                }),
+                }),*/
                 // Weapon switches
-                new CreateWeaponSwitchBehavior(WeaponType.Scepter, ctx => iSettings.Instance.SceptorPull ? (Primary == WeaponType.Scepter || Secondary == WeaponType.Scepter) : false),
+                //new CreateWeaponSwitchBehavior(WeaponType.Scepter, ctx => iSettings.Instance.SceptorPull ? (Primary == WeaponType.Scepter || Secondary == WeaponType.Scepter) : false),
                 // Sceptor pull
                 Movement.MoveIntoRangeBehavior(1200),
                 new CreateSpellBehavior("Orb of Wrath"),
@@ -157,8 +157,8 @@ namespace iGuardian
                 ctxChanger,
                 CombatUtilities.CreateWaitForCast(),
                 // Weapon switches
-                new CreateWeaponSwitchBehavior(WeaponType.Sword, ctx => (Primary == WeaponType.Sword || Secondary == WeaponType.Sword) ? (ctx.CountViableEnemies(300f) < 1 || ctx.CurrentPlayerHealthPercentage < 50) : false),
-                new CreateWeaponSwitchBehavior(WeaponType.Greatsword, ctx => (Primary == WeaponType.Greatsword|| Secondary == WeaponType.Greatsword) ? (ctx.CurrentPlayerHealthPercentage > 50 || ctx.CountViableEnemies(300f) >= 1) : false),
+                //new CreateWeaponSwitchBehavior(WeaponType.Sword, ctx => (Primary == WeaponType.Sword || Secondary == WeaponType.Sword) ? (ctx.CountViableEnemies(300f) < 1 || ctx.CurrentPlayerHealthPercentage < 50) : false),
+                //new CreateWeaponSwitchBehavior(WeaponType.Greatsword, ctx => (Primary == WeaponType.Greatsword|| Secondary == WeaponType.Greatsword) ? (ctx.CurrentPlayerHealthPercentage > 50 || ctx.CountViableEnemies(300f) >= 1) : false),
                 // Healing skills
                 new CreateSpellBehavior("Signet of Resolve", ctx => ctx.CurrentPlayerHealthPercentage < iSettings.Instance.SignetOfResolvePercentage),
                 new CreateSpellBehavior("Shelter", ctx => ctx.CurrentPlayerHealthPercentage < iSettings.Instance.ShelterPercentage),
