@@ -145,8 +145,6 @@ namespace iGuardian
                 new CreateSpellBehavior("Leap of Faith"),
                 // Sword pull
                 new CreateSpellBehavior("Flashing Blade"),
-                // Regular walk 
-                Movement.MoveIntoRangeBehavior(50f),
                 // Instigate combat
                 GuardianCombat()
                 );
@@ -157,13 +155,15 @@ namespace iGuardian
             return new PrioritySelector(
                 ctxChanger,
                 CombatUtilities.CreateWaitForCast(),
+                // Regular walk 
+                Movement.MoveIntoRangeBehavior(50f),
                 // Weapon switches
                 //new CreateWeaponSwitchBehavior(WeaponType.Sword, ctx => (Primary == WeaponType.Sword || Secondary == WeaponType.Sword) ? (ctx.CountViableEnemies(300f) < 1 || ctx.CurrentPlayerHealthPercentage < 50) : false),
                 //new CreateWeaponSwitchBehavior(WeaponType.Greatsword, ctx => (Primary == WeaponType.Greatsword|| Secondary == WeaponType.Greatsword) ? (ctx.CurrentPlayerHealthPercentage > 50 || ctx.CountViableEnemies(300f) >= 1) : false),
                 // Healing skills
-                new CreateSpellBehavior("Signet of Resolve", ctx => ctx.CurrentPlayerHealthPercentage < iSettings.Instance.SignetOfResolvePercentage),
-                new CreateSpellBehavior("Shelter", ctx => ctx.CurrentPlayerHealthPercentage < iSettings.Instance.ShelterPercentage),
-                new CreateSpellBehavior("Healing Breeze", ctx => ctx.CurrentPlayerHealthPercentage < iSettings.Instance.HealingBreezePercentage),
+                new CreateSpellBehavior("Signet of Resolve", ctx => ctx.CurrentPlayerHealthPercentage < 40),
+                new CreateSpellBehavior("Shelter", ctx => ctx.CurrentPlayerHealthPercentage < 40),
+                new CreateSpellBehavior("Healing Breeze", ctx => ctx.CurrentPlayerHealthPercentage < 40),
                 // Greatsword combat
                 new CreateSpellBehavior("Symbol of Wrath", ctx => ctx.DistanceToTarget < iSettings.Instance.MininumRange), 
                 new CreateSpellBehavior("Whirling Wrath", ctx => ctx.CountViableEnemies(iSettings.Instance.WhirlingBladeAOERange) > iSettings.Instance.WhirlingBladeAOERange || ctx.CurrentTargetHealthPercentage > 60),
