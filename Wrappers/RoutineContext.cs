@@ -216,7 +216,7 @@ namespace iCombat.Wrappers
         {
             get
             {
-                return _FriendlyPosition ?? (_FriendlyPosition = new PositionCache(BuddyGw.Objects.GetObjectsOfType<Gw2Character>().Where(u => BuddyGw.Objects.IsValid(u) && u.IsFriendly && u.IsAlive).Select(u => new PositionCache.CachedPosition { Position = u.Position, Radius = 3f })));
+                return _FriendlyPosition ?? (_FriendlyPosition = new PositionCache(BuddyGw.Objects.GetObjectsOfType<Gw2Character>().Where(u => BuddyGw.Objects.IsValid(u) && u.IsFriendly && u.IsAlive && u.IsPlayer).Select(u => new PositionCache.CachedPosition { Position = u.Position, Radius = 3f })));
             }
         }
     }
