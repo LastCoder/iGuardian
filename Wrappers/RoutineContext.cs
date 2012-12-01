@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using Typhon.Common;
 using Typhon.CommonBot;
+using iCombat.iGuardian.Methods;
 
 // Combat context deterived from superreen (so, credits to that beast) 
 namespace iCombat.Wrappers
@@ -65,8 +66,7 @@ namespace iCombat.Wrappers
                 return _buffs;
             }
         }
-        
-       
+     
         internal Dictionary<string, Gw2Skill> GetBuffs(Gw2Character player)
         {
             if (player != null)
@@ -98,7 +98,8 @@ namespace iCombat.Wrappers
         {
             get
             {
-                return Vector3.Distance(CurrentPlayerPosition, CurrentTargetPosition);
+
+                return Calculations.Distance(CurrentPlayerPosition, CurrentTargetPosition);
             }
         }
 

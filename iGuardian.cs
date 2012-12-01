@@ -5,13 +5,17 @@ using System.Text;
 using System.Windows;
 using Buddy.Gw2;
 using Buddy.Gw2.Objects;
+using DisciplineBuddy.Methods;
 using iCombat.Composites;
 using iCombat.GUI;
+using iCombat.iGuardian.Methods;
 using iCombat.Wrappers;
+using iGuardian.Composites;
 using iGuardian.Settings;
 using Typhon.BehaviourTree;
 using Typhon.Common;
 using Typhon.CommonBot;
+using Typhon.CommonBot.Bots;
 using Typhon.DefaultRoutines;
 using Action = Typhon.BehaviourTree.Action;
 
@@ -38,12 +42,13 @@ namespace iGuardian
         public static string ProjectName = "iGuardian";
 
         public override string Name { get { return ProjectName; } }
-        public override Version Version { get { return new Version(0, 0, 8); } }
+        public override Version Version { get { return new Version(0, 0, 9); } }
         public override string Author { get { return "iuser99";  } }
 
         public override void Initialize()
         {
-            
+            CombatTargeting.Instance.Provider = new iTargeting();
+            Logger.Write("Initialized iGuardian version {0}", Version);
         }
 
         public override void Dispose()
@@ -146,6 +151,8 @@ namespace iGuardian
                 // Sword pull
                 new CreateSpellBehavior("Flashing Blade"),
                 // Instigate combat
+                // Regular walk 
+                Movement.MoveIntoRangeBehavior(50f),
                 GuardianCombat()
                 );
         }
@@ -155,8 +162,6 @@ namespace iGuardian
             return new PrioritySelector(
                 ctxChanger,
                 CombatUtilities.CreateWaitForCast(),
-                // Regular walk 
-                Movement.MoveIntoRangeBehavior(50f),
                 // Weapon switches
                 //new CreateWeaponSwitchBehavior(WeaponType.Sword, ctx => (Primary == WeaponType.Sword || Secondary == WeaponType.Sword) ? (ctx.CountViableEnemies(300f) < 1 || ctx.CurrentPlayerHealthPercentage < 50) : false),
                 //new CreateWeaponSwitchBehavior(WeaponType.Greatsword, ctx => (Primary == WeaponType.Greatsword|| Secondary == WeaponType.Greatsword) ? (ctx.CurrentPlayerHealthPercentage > 50 || ctx.CountViableEnemies(300f) >= 1) : false),

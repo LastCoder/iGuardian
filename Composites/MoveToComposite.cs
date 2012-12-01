@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using iCombat.Wrappers;
 using Typhon.BehaviourTree;
 using Typhon.Common;
 using Typhon.CommonBot.Navigation;
 using Typhon.Navigation;
 
-namespace iCombat.Wrappers
+namespace iGuardian.Composites
 {
     internal class MoveToComposite : Composite
     {
@@ -26,13 +27,11 @@ namespace iCombat.Wrappers
 
         public override RunStatus Tick(object context)
         {
-
             RoutineContext ctx = (RoutineContext)context;
             ctx.Update();
             _CurrentPosition = _TargetPosition(ctx);
             if (_IsInRange(ctx))
             {
-
                 Typhon.Navigation.Movement.StopMoving();
                 return RunStatus.Failure;
             }
@@ -43,13 +42,11 @@ namespace iCombat.Wrappers
                     MoveResult movement = Navigator.MoveTo(_CurrentPosition, _DestinationName);
                     if (movement == MoveResult.Failure)
                     {
-
                         _LastDistance = -1;
                         return RunStatus.Failure;
                     }
                     else if (movement == MoveResult.Done)
                     {
-
                         _LastDistance = -1;
                         return RunStatus.Failure;
                     }
@@ -58,7 +55,6 @@ namespace iCombat.Wrappers
                         float currentDistance = ctx.CurrentPlayerPosition.Distance(_CurrentPosition);
                         if (_LastDistance != -1 && currentDistance > _LastDistance)
                         {
-
                             _LastDistance = -1;
                             return RunStatus.Success;
                         }
@@ -72,7 +68,6 @@ namespace iCombat.Wrappers
                 }
                 else
                 {
-
                     _LastDistance = -1;
                     return RunStatus.Failure;
                 }
@@ -86,7 +81,6 @@ namespace iCombat.Wrappers
             _CurrentPosition = _TargetPosition(ctx);
             if (_IsInRange(ctx))
             {
-
                 Typhon.Navigation.Movement.StopMoving();
                 yield return RunStatus.Failure;
             }
@@ -102,7 +96,6 @@ namespace iCombat.Wrappers
                     }
                     else if (movement == MoveResult.Done)
                     {
-
                         _LastDistance = -1;
                         yield return RunStatus.Failure;
                     }
@@ -111,7 +104,6 @@ namespace iCombat.Wrappers
                         float currentDistance = ctx.CurrentPlayerPosition.Distance(_CurrentPosition);
                         if (_LastDistance != -1 && currentDistance > _LastDistance)
                         {
-
                             _LastDistance = -1;
                             yield return RunStatus.Success;
                         }
@@ -125,6 +117,7 @@ namespace iCombat.Wrappers
                 }
                 else
                 {
+
                     _LastDistance = -1;
                     yield return RunStatus.Failure;
                 }
