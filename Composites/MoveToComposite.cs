@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using iGuardian.Methods;
 using iGuardian.Wrappers;
 using Typhon.BehaviourTree;
 using Typhon.Common;
@@ -28,7 +29,14 @@ namespace iGuardian.Composites
         public override RunStatus Tick(object context)
         {
             RoutineContext ctx = (RoutineContext)context;
-            ctx.Update();
+            try
+            {
+                ctx.Update();
+            }
+            catch (Exception e)
+            {
+                Logger.WriteVerbose(e.Message);
+            }
             _CurrentPosition = _TargetPosition(ctx);
             if (_IsInRange(ctx))
             {

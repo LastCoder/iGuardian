@@ -26,7 +26,8 @@ namespace iGuardian.Wrappers
             _currentTargetIsVisible = null;
             _currentWeapon = null;
             _buffs = null;
-            
+            _UnitPosition = null;
+            _FriendlyPosition = null;
         }
 
         private HashSet<string> _skillNames;

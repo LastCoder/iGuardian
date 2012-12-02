@@ -18,6 +18,7 @@ namespace iGuardian.Methods
                 BuddyGw.Objects.IsValid(o) &&
                 !Blacklist.Contains(o.AgentId) &&
                 o.IsAlive &&
+                !o.IsCritter && 
                 o.Distance < CharacterSettings.Instance.PullRange &&
                 (o.IsHostile || o.IsIndifferent) &&
                 BuddyGw.IsVisible(o))

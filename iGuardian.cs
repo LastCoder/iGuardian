@@ -129,6 +129,7 @@ namespace iGuardian
         public Composite GuardianPull()
         {
             return new PrioritySelector(
+                ctxChanger,
                 // Simple, but ugly, run-once action
                 /*new Action(ctx => {
                     if (!startup)
@@ -168,7 +169,7 @@ namespace iGuardian
         {
             return new PrioritySelector(
                 ctxChanger,
-                CombatUtilities.CreateWaitForCast(),
+                //CombatUtilities.CreateWaitForCast(),
                 // Weapon switches
                 //new CreateWeaponSwitchBehavior(WeaponType.Sword, ctx => (Primary == WeaponType.Sword || Secondary == WeaponType.Sword) ? (ctx.CountViableEnemies(300f) < 1 || ctx.CurrentPlayerHealthPercentage < 50) : false),
                 //new CreateWeaponSwitchBehavior(WeaponType.Greatsword, ctx => (Primary == WeaponType.Greatsword|| Secondary == WeaponType.Greatsword) ? (ctx.CurrentPlayerHealthPercentage > 50 || ctx.CountViableEnemies(300f) >= 1) : false),
