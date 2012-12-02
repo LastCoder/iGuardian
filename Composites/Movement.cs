@@ -9,7 +9,7 @@ using Typhon.CommonBot;
 using Typhon.CommonBot.Navigation;
 using Typhon.Navigation;
 using Action = Typhon.BehaviourTree.Action;
-using iCombat.Wrappers;
+using iGuardian.Wrappers;
 
 namespace iGuardian.Composites
 {
