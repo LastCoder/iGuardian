@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Buddy.Gw2;
 using Buddy.Gw2.Objects;
+using iGuardian.Methods;
 using Typhon.BehaviourTree;
 
 namespace iGuardian.Wrappers
@@ -29,6 +30,7 @@ namespace iGuardian.Wrappers
                     bool currentCondition = Condition == null || Condition(ctx);
                     if (currentCondition)
                     {
+                        Logger.WriteVerbose("Switching weapons from {0} to {1}.", ctx.CurrentWeapon.ToString(), this.WeaponType.ToString());
                         BuddyGw.Me.SwitchWeapons();
                         return new List<RunStatus>() { RunStatus.Success}; 
                     }

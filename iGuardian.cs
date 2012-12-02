@@ -49,7 +49,7 @@ namespace iGuardian
         public static string ProjectName = "iGuardian";
 
         public override string Name { get { return ProjectName; } }
-        public override Version Version { get { return new Version(0, 1, 0); } }
+        public override Version Version { get { return new Version(0, 1, 1); } }
         public override string Author { get { return "iuser99";  } }
 
         public override void Initialize()

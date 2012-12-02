@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows;
 using Buddy.Gw2;
 using Buddy.Gw2.Objects;
+using iGuardian.Methods;
 using Typhon.BehaviourTree;
 using Typhon.Common;
 
@@ -38,7 +39,7 @@ namespace iGuardian.Wrappers
                         {
                             if (spell.IsReady)
                             {
-
+                                Logger.WriteVerbose("Casting {0} on position {1}.", spell.Name, Vector3.Zero);
                                 SpellManager.Cast(spell);
                                 return new List<RunStatus>() { RunStatus.Success };
 
