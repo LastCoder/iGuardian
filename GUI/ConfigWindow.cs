@@ -14,7 +14,7 @@ using System.Windows.Media;
 using iGuardian.GUI;
 using iGuardian.Settings;
 
-namespace iCombat.GUI
+namespace iGuardian.GUI
 {
     internal class ConfigWindow : Window
     {

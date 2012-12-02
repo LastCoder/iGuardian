@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Typhon.Common;
 
-namespace iCombat.Wrappers
+namespace iGuardian.Wrappers
 {
     internal sealed class PositionCache
     {

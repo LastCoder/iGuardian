@@ -9,7 +9,7 @@ using Typhon.CommonBot;
 using iGuardian.Methods;
 
 // Combat context deterived from superreen (so, credits to that beast) 
-namespace iCombat.Wrappers
+namespace iGuardian.Wrappers
 {
     internal class RoutineContext
     {

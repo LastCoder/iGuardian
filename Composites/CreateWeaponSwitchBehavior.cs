@@ -6,7 +6,7 @@ using Buddy.Gw2;
 using Buddy.Gw2.Objects;
 using Typhon.BehaviourTree;
 
-namespace iCombat.Wrappers
+namespace iGuardian.Wrappers
 {
     internal class CreateWeaponSwitchBehavior : Composite
     {

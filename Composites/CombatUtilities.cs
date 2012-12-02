@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using iCombat.Wrappers;
+using iGuardian.Wrappers;
 using Typhon.BehaviourTree;
 
-namespace iCombat.Composites
+namespace iGuardian.Composites
 {
     internal static class CombatUtilities
     {

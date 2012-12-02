@@ -9,7 +9,7 @@ using Typhon.BehaviourTree;
 using Typhon.Common;
 
 
-namespace iCombat.Wrappers
+namespace iGuardian.Wrappers
 {
     internal class CreateSpellBehavior : Composite
     {

@@ -5,16 +5,16 @@ using System.Text;
 using System.Windows;
 using Buddy.Gw2;
 using Buddy.Gw2.Objects;
-using iCombat.Composites;
-using iCombat.GUI;
-using iCombat.Wrappers;
 using iGuardian.Composites;
+using iGuardian.GUI;
 using iGuardian.Methods;
 using iGuardian.Settings;
+using iGuardian.Wrappers;
 using Typhon.BehaviourTree;
 using Typhon.Common;
 using Typhon.CommonBot;
 using Typhon.CommonBot.Bots;
+using Typhon.CommonBot.Settings;
 using Typhon.DefaultRoutines;
 using Action = Typhon.BehaviourTree.Action;
 
@@ -49,7 +49,7 @@ namespace iGuardian
         public static string ProjectName = "iGuardian";
 
         public override string Name { get { return ProjectName; } }
-        public override Version Version { get { return new Version(0, 0, 9); } }
+        public override Version Version { get { return new Version(0, 1, 0); } }
         public override string Author { get { return "iuser99";  } }
 
         public override void Initialize()
@@ -173,18 +173,18 @@ namespace iGuardian
                 //new CreateWeaponSwitchBehavior(WeaponType.Sword, ctx => (Primary == WeaponType.Sword || Secondary == WeaponType.Sword) ? (ctx.CountViableEnemies(300f) < 1 || ctx.CurrentPlayerHealthPercentage < 50) : false),
                 //new CreateWeaponSwitchBehavior(WeaponType.Greatsword, ctx => (Primary == WeaponType.Greatsword|| Secondary == WeaponType.Greatsword) ? (ctx.CurrentPlayerHealthPercentage > 50 || ctx.CountViableEnemies(300f) >= 1) : false),
                 // Healing skills
-                new CreateSpellBehavior("Signet of Resolve", ctx => ctx.CurrentPlayerHealthPercentage < 40),
-                new CreateSpellBehavior("Shelter", ctx => ctx.CurrentPlayerHealthPercentage < 40),
-                new CreateSpellBehavior("Healing Breeze", ctx => ctx.CurrentPlayerHealthPercentage < 40),
+                new CreateSpellBehavior("Signet of Resolve", ctx => ctx.CurrentPlayerHealthPercentage <= iSettings.Instance.SignetOfResolvePercentage),
+                new CreateSpellBehavior("Shelter", ctx => ctx.CurrentPlayerHealthPercentage <= iSettings.Instance.ShelterPercentage),
+                new CreateSpellBehavior("Healing Breeze", ctx => ctx.CurrentPlayerHealthPercentage <= iSettings.Instance.HealingBreezePercentage),
                 // Greatsword combat
-                new CreateSpellBehavior("Symbol of Wrath", ctx => ctx.DistanceToTarget < iSettings.Instance.MininumRange), 
+                new CreateSpellBehavior("Symbol of Wrath", ctx => ctx.DistanceToTarget <= iSettings.Instance.MininumRange), 
                 new CreateSpellBehavior("Whirling Wrath", ctx => ctx.CountViableEnemies(iSettings.Instance.WhirlingBladeAOERange) > iSettings.Instance.WhirlingBladeAOERange || ctx.CurrentTargetHealthPercentage > 60),
                 new CreateSpellBehavior("Blinding Blade"),
-                new CreateSpellBehavior("Pull", ctx => ctx.DistanceToTarget < iSettings.Instance.MininumRange),
+                new CreateSpellBehavior("Pull", ctx => ctx.DistanceToTarget <= iSettings.Instance.MininumRange),
                 new CreateSpellBehavior("Wrathful Strike"),
                 new CreateSpellBehavior("Vengeful Strike"),
                 // Sword combat
-                new CreateSpellBehavior("Zealot's Defense", ctx => ctx.DistanceToTarget < iSettings.Instance.MininumRange && ctx.CurrentTargetHealthPercentage > iSettings.Instance.WhirlingBladeSinglePercent),
+                new CreateSpellBehavior("Zealot's Defense", ctx => ctx.DistanceToTarget <= iSettings.Instance.MininumRange && ctx.CurrentTargetHealthPercentage > iSettings.Instance.WhirlingBladeSinglePercent),
                 new CreateSpellBehavior("Flashing Blade"),
                 new CreateSpellBehavior("Sword of Wrath"),
                 new CreateSpellBehavior("Sword Arc"),
@@ -252,7 +252,7 @@ namespace iGuardian
                 new CreateSpellBehavior("\"Hold the Line!\""),
                 new CreateSpellBehavior("Smite Condition"),
                 new CreateSpellBehavior("Merciful Intervention"),
-                new CreateSpellBehavior("Judge's Intervention", ctx => ctx.CountViableEnemies(1200f) > iSettings.Instance.JudgeInterventionCount),
+                new CreateSpellBehavior("Judge's Intervention", ctx => ctx.CountViableEnemies(1200f) >= iSettings.Instance.JudgeInterventionCount),
                 new CreateSpellBehavior("Contemplation of Purity"),
                 new CreateSpellBehavior("Wall of Reflection", ctx => iSettings.Instance.WallOfReflection ? ctx.DistanceToTarget > 500f : false), 
                 new CreateSpellBehavior("Sanctuary", ctx => false), 
