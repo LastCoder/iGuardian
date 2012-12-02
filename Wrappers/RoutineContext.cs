@@ -26,8 +26,7 @@ namespace iGuardian.Wrappers
             _currentTargetIsVisible = null;
             _currentWeapon = null;
             _buffs = null;
-            _FriendlyPosition = null;
-            _UnitPosition = null;
+            
         }
 
         private HashSet<string> _skillNames;
@@ -56,32 +55,34 @@ namespace iGuardian.Wrappers
             }
         }
 
-        private Dictionary<string, Gw2Skill> _buffs;
-        internal Dictionary<string, Gw2Skill> Buffs
+        private List<Gw2Skill> _buffs;
+        internal List<Gw2Skill> Buffs
         {
             get
             {
                 if (_buffs == null)
-                    _buffs = BuddyGw.Me.Buffs.ToDictionary(s => s.Name, s => s);
+                    _buffs = BuddyGw.Me.Buffs.ToList();
                 return _buffs;
             }
         }
      
-        internal Dictionary<string, Gw2Skill> GetBuffs(Gw2Character player)
+        internal List<Gw2Skill> GetBuffs(Gw2Character player)
         {
             if (player != null)
             {
-                return player.Buffs.ToDictionary(s => s.Name, s => s);
+                return player.Buffs.ToList();
             }
             return null;
         }
 
-        internal Gw2Skill GetBuff(string name)
+        internal bool HasBuff(string name)
         {
-            Gw2Skill s;
-            if (!Buffs.TryGetValue(name, out s))
-                return null;
-            return s;
+            foreach (Gw2Skill skill in Buffs)
+            {
+                if (skill.Name == name)
+                    return true;
+            }
+            return false;
         }
 
         internal Gw2Skill GetSpell(string name)

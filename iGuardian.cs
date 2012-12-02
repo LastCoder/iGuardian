@@ -257,7 +257,7 @@ namespace iGuardian
                 new CreateSpellBehavior("Wall of Reflection", ctx => iSettings.Instance.WallOfReflection ? ctx.DistanceToTarget > 500f : false), 
                 new CreateSpellBehavior("Sanctuary", ctx => false), 
                 new CreateSpellBehavior("Purging Flames", ctx => iSettings.Instance.PurgingFlames ? ctx.Buffs.Count() > iSettings.Instance.PurgingFlamesCount : false), 
-                new CreateSpellBehavior("Hallowed Ground", ctx => iSettings.Instance.HallowedGround ? ctx.GetBuff("Stun") != null : false),
+                new CreateSpellBehavior("Hallowed Ground", ctx => iSettings.Instance.HallowedGround ? ctx.HasBuff("Stun") : false),
                 // Downed combat
                 new CreateSpellBehavior("Symbol of Judgment", ctx => false), 
                 new CreateSpellBehavior("Wave of Light"),
