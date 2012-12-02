@@ -5,12 +5,11 @@ using System.Text;
 using System.Windows;
 using Buddy.Gw2;
 using Buddy.Gw2.Objects;
-using DisciplineBuddy.Methods;
 using iCombat.Composites;
 using iCombat.GUI;
-using iCombat.iGuardian.Methods;
 using iCombat.Wrappers;
 using iGuardian.Composites;
+using iGuardian.Methods;
 using iGuardian.Settings;
 using Typhon.BehaviourTree;
 using Typhon.Common;
@@ -29,6 +28,14 @@ namespace iGuardian
     {
 
         #region Variables
+
+
+        public iGuardian()
+        {
+            Instance = this;
+        }
+
+        public static iGuardian Instance { get; private set; }
 
         private Window _configWindow;
         public WeaponType Primary, Secondary;

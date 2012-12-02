@@ -7,7 +7,7 @@ using Buddy.Gw2.Objects;
 using Typhon.CommonBot;
 using Typhon.CommonBot.Settings;
 
-namespace iCombat.iGuardian.Methods
+namespace iGuardian.Methods
 {
     internal class iTargeting : ITargetingProvider
     {

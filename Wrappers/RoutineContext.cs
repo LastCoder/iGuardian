@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using Typhon.Common;
 using Typhon.CommonBot;
-using iCombat.iGuardian.Methods;
+using iGuardian.Methods;
 
 // Combat context deterived from superreen (so, credits to that beast) 
 namespace iCombat.Wrappers

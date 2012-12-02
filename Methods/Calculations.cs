@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using Buddy.Gw2;
 using Buddy.Gw2.Objects;
-using DisciplineBuddy.Methods;
 using Typhon.Common;
 
-namespace iCombat.iGuardian.Methods
+namespace iGuardian.Methods
 {
     internal class Calculations
     {
