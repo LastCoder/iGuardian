@@ -30,6 +30,7 @@ namespace iGuardian.Wrappers
             _FriendlyPosition = null;
         }
 
+        #region Updatables
         private HashSet<string> _skillNames;
         internal HashSet<string> SkillNames
         {
@@ -66,63 +67,7 @@ namespace iGuardian.Wrappers
                 return _buffs;
             }
         }
-     
-        internal List<Gw2Skill> GetBuffs(Gw2Character player)
-        {
-            if (player != null)
-            {
-                return player.Buffs.ToList();
-            }
-            return null;
-        }
-
-        internal bool HasBuff(string name)
-        {
-            foreach (Gw2Skill skill in Buffs)
-            {
-                if (skill.Name == name)
-                    return true;
-            }
-            return false;
-        }
-
-        internal Gw2Skill GetSpell(string name)
-        {
-
-            Gw2Skill s;
-            if (!Skills.TryGetValue(name, out s))
-                return null;
-            return s;
-
-        }
-
-        internal float DistanceToTarget
-        {
-            get
-            {
-
-                return Calculations.Distance(CurrentPlayerPosition, CurrentTargetPosition);
-            }
-        }
-
-        internal int CountVisibleEnemies
-        {
-            get
-            {
-                return UnitPositions.CachedPositions.Where(u => BuddyGw.IsVisible(u.Position)).Count();
-            }
-        }
-
-        internal int CountViableEnemies(float radius)
-        {
-            return UnitPositions.CachedPositions.Where(u => BuddyGw.IsVisible(u.Position) && Vector3.Distance(CurrentPlayerPosition, u.Position) < radius).Count();
-        }
-
-        internal int CountViableFriendlies(float radius)
-        {
-            return FriendlyPositions.CachedPositions.Where(u => BuddyGw.IsVisible(u.Position) && Vector3.Distance(CurrentPlayerPosition, u.Position) < radius).Count();
-        }
-
+             
         private bool? _isCasting;
         internal bool IsCasting
         {
@@ -222,5 +167,66 @@ namespace iGuardian.Wrappers
                 return _FriendlyPosition ?? (_FriendlyPosition = new PositionCache(BuddyGw.Objects.GetObjectsOfType<Gw2Character>().Where(u => BuddyGw.Objects.IsValid(u) && u.IsFriendly && u.IsAlive && u.IsPlayer).Select(u => new PositionCache.CachedPosition { Position = u.Position, Radius = 3f })));
             }
         }
+
+        #endregion
+
+        #region Methods
+        internal int CountVisibleEnemies
+        {
+            get
+            {
+                return UnitPositions.CachedPositions.Where(u => BuddyGw.IsVisible(u.Position)).Count();
+            }
+        }
+
+        internal int CountViableEnemies(float radius)
+        {
+            return UnitPositions.CachedPositions.Where(u => BuddyGw.IsVisible(u.Position) && Vector3.Distance(CurrentPlayerPosition, u.Position) < radius).Count();
+        }
+
+        internal int CountViableFriendlies(float radius)
+        {
+            return FriendlyPositions.CachedPositions.Where(u => BuddyGw.IsVisible(u.Position) && Vector3.Distance(CurrentPlayerPosition, u.Position) < radius).Count();
+        }
+
+        internal List<Gw2Skill> GetBuffs(Gw2Character player)
+        {
+            if (player != null)
+            {
+                return player.Buffs.ToList();
+            }
+            return null;
+        }
+
+        internal bool HasBuff(string name)
+        {
+            foreach (Gw2Skill skill in Buffs)
+            {
+                if (skill.Name == name)
+                    return true;
+            }
+            return false;
+        }
+
+        internal Gw2Skill GetSpell(string name)
+        {
+
+            Gw2Skill s;
+            if (!Skills.TryGetValue(name, out s))
+                return null;
+            return s;
+
+        }
+
+        internal float DistanceToTarget
+        {
+            get
+            {
+
+                return Calculations.Distance(CurrentPlayerPosition, CurrentTargetPosition);
+            }
+        }
+
+        #endregion
     }
 }

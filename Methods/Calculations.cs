@@ -23,7 +23,7 @@ namespace iGuardian.Methods
             return a.Distance(b);
         }
 
-        public static double CalculateWeight(Gw2Character character) 
+        public static double CalculateEnemyWeight(Gw2Character character) 
         {
             double weight = 1;
             double healthpct = character.Health.Current / character.Health.Maximum;
@@ -42,5 +42,26 @@ namespace iGuardian.Methods
             weight *= character.InCombat ? 5 : 1;
             return weight;
         }
+
+        public static double CalculateFriendlyWeight(Gw2Character character)
+        {
+            double weight = 1;
+            double healthpct = character.Health.Current / character.Health.Maximum;
+            if (BuddyGw.Me.IsFightingForLife)
+            {
+                weight += healthpct;
+            }
+
+            weight += CharactersAround(character) * 5;
+            weight *= character.InCombat ? 5 : 1;
+            return weight;
+        }
+
+        public static int CharactersAround(Gw2Character character)
+        {
+            return Game.GetSurrounding(character.Position, 10).Count();
+        }
+           
+      
     }
 }

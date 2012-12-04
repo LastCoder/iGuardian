@@ -153,6 +153,22 @@ namespace iGuardian.Settings
         [Category("Healing")]
         public float HealingBreezePercentage { get; set; }
 
+        [XmlElement("HealOnly")]
+        [DisplayName("Use Healing Only")]
+        [Description("Use Healing Only")]
+        [DefaultValue(false)]
+        [Setting]
+        [Category("Healing")]
+        public bool HealOnly { get; set; }
+
+        [XmlElement("HealAndFight")]
+        [DisplayName("Use Healing and Fight")]
+        [Description("Use Healing and Fight")]
+        [DefaultValue(false)]
+        [Setting]
+        [Category("Healing")]
+        public bool HealAndFight { get; set; }
+
         #endregion
 
         #region Utility settings

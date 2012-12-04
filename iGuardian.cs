@@ -49,7 +49,7 @@ namespace iGuardian
         public static string ProjectName = "iGuardian";
 
         public override string Name { get { return ProjectName; } }
-        public override Version Version { get { return new Version(0, 1, 1); } }
+        public override Version Version { get { return new Version(0, 1, 2); } }
         public override string Author { get { return "iuser99";  } }
 
         public override void Initialize()
@@ -128,6 +128,12 @@ namespace iGuardian
 
         public Composite GuardianPull()
         {
+            if (iSettings.Instance.HealOnly)
+            {
+                return new PrioritySelector(
+                    ctxChanger,
+                    GuardianHealing());
+            }
             return new PrioritySelector(
                 ctxChanger,
                 // Simple, but ugly, run-once action
@@ -195,7 +201,7 @@ namespace iGuardian
                 new CreateSpellBehavior("Banish"),
                 new CreateSpellBehavior("Zealot's Embrace"),
                 new CreateSpellBehavior("Mighty Blow"),
-                new CreateSpellBehavior("Symbol of Protection", ctx => false),
+                new CreateInteractiveSpellBehavior("Symbol of Protection", BuddyGw.Me),
                 new CreateSpellBehavior("Hammer Bash"),
                 new CreateSpellBehavior("Hammer Swing"),
                 // Mace combat
@@ -206,7 +212,7 @@ namespace iGuardian
                 new CreateSpellBehavior("True Strike"),
                 // Sceptor combat
                 new CreateSpellBehavior("Chains of Light"),
-                new CreateSpellBehavior("Smite", ctx => false), 
+                new CreateInteractiveSpellBehavior("Smite", Game.GetBestCluster()), 
                 new CreateSpellBehavior("Orb of Wrath"),
                 // Spear combat
                 new CreateSpellBehavior("Wrathful Grasp"),
@@ -221,9 +227,9 @@ namespace iGuardian
                 new CreateSpellBehavior("Purify"),
                 new CreateSpellBehavior("Light of Judgment"),
                 // Staff combat
-                new CreateSpellBehavior("Line of Warding", ctx => false), 
+                new CreateInteractiveSpellBehavior("Line of Warding", Game.GetBestCluster(), ctx => ctx.DistanceToTarget > 50), 
                 new CreateSpellBehavior("Empower"),
-                new CreateSpellBehavior("Symbol of Swiftness", ctx => false), 
+                new CreateInteractiveSpellBehavior("Symbol of Swiftness", BuddyGw.Me), 
                 new CreateSpellBehavior("Flash of Light"),
                 new CreateSpellBehavior("Orb of Light"),
                 new CreateSpellBehavior("Wave of Wrath"),
@@ -256,11 +262,11 @@ namespace iGuardian
                 new CreateSpellBehavior("Judge's Intervention", ctx => ctx.CountViableEnemies(1200f) >= iSettings.Instance.JudgeInterventionCount),
                 new CreateSpellBehavior("Contemplation of Purity"),
                 new CreateSpellBehavior("Wall of Reflection", ctx => iSettings.Instance.WallOfReflection ? ctx.DistanceToTarget > 500f : false), 
-                new CreateSpellBehavior("Sanctuary", ctx => false), 
+                new CreateInteractiveSpellBehavior("Sanctuary", BuddyGw.Me), 
                 new CreateSpellBehavior("Purging Flames", ctx => iSettings.Instance.PurgingFlames ? ctx.Buffs.Count() > iSettings.Instance.PurgingFlamesCount : false), 
                 new CreateSpellBehavior("Hallowed Ground", ctx => iSettings.Instance.HallowedGround ? ctx.HasBuff("Stun") : false),
                 // Downed combat
-                new CreateSpellBehavior("Symbol of Judgment", ctx => false), 
+                new CreateInteractiveSpellBehavior("Symbol of Judgment", BuddyGw.Me), 
                 new CreateSpellBehavior("Wave of Light"),
                 new CreateSpellBehavior("Wrath"),
                 new CreateSpellBehavior("Bandage"),
@@ -283,7 +289,7 @@ namespace iGuardian
                     new CreateSpellBehavior("Pacifism"),
                     new CreateSpellBehavior("Protective Spirit"),
                     new CreateSpellBehavior("Purifying Ribbon"),
-                    new CreateSpellBehavior("Heal Area", ctx => false) 
+                    new CreateInteractiveSpellBehavior("Heal Area", BuddyGw.Me) 
                 ),
                 new CreateSpellBehavior("Tome of Courage"),
                 new CreateSpellBehavior("Renewed Focus")
@@ -293,6 +299,20 @@ namespace iGuardian
         public Composite GuardianBuffs()
         {
             return new Typhon.BehaviourTree.Action(ctx => RunStatus.Failure);
+        }
+
+        public Composite GuardianHealing()
+        {
+            return new PrioritySelector(
+                ctxChanger,
+                // staff
+                new CreateSpellBehavior("Line of Warding", ctx => false), 
+                new CreateSpellBehavior("Empower"),
+                new CreateSpellBehavior("Symbol of Swiftness", ctx => false), 
+                new CreateSpellBehavior("Flash of Light"),
+                new CreateSpellBehavior("Orb of Light"),
+                new CreateSpellBehavior("Wave of Wrath")
+                );
         }
         #endregion
 
