@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows;
 using Buddy.Gw2;
 using Buddy.Gw2.Objects;
+using iGuardian.Behaviors;
 using iGuardian.Composites;
 using iGuardian.GUI;
 using iGuardian.Methods;
@@ -49,7 +50,7 @@ namespace iGuardian
         public static string ProjectName = "iGuardian";
 
         public override string Name { get { return ProjectName; } }
-        public override Version Version { get { return new Version(0, 1, 2); } }
+        public override Version Version { get { return new Version(0, 1, 3); } }
         public override string Author { get { return "iuser99";  } }
 
         public override void Initialize()
@@ -94,24 +95,11 @@ namespace iGuardian
         }
         #endregion
 
-        #region Logging Method
-
-        public static void Log(string message, bool debug = false)
-        {
-            message = string.Format("[{0}{1}] {2}", ProjectName, debug ? " -> Debug" : "", message);
-            if (debug)
-                Logging.WriteDiagnostic(message);
-            else
-                Logging.Write(message);
-        }
-
         public static void Log(string message, object arguements, bool debug = false)
         {
             message = string.Format(message, arguements);
             Log(message, debug);
         }
-
-        #endregion
 
         #region Methods
 
@@ -179,126 +167,17 @@ namespace iGuardian
                 // Weapon switches
                 //new CreateWeaponSwitchBehavior(WeaponType.Sword, ctx => (Primary == WeaponType.Sword || Secondary == WeaponType.Sword) ? (ctx.CountViableEnemies(300f) < 1 || ctx.CurrentPlayerHealthPercentage < 50) : false),
                 //new CreateWeaponSwitchBehavior(WeaponType.Greatsword, ctx => (Primary == WeaponType.Greatsword|| Secondary == WeaponType.Greatsword) ? (ctx.CurrentPlayerHealthPercentage > 50 || ctx.CountViableEnemies(300f) >= 1) : false),
-                // Healing skills
-                new CreateSpellBehavior("Signet of Resolve", ctx => ctx.CurrentPlayerHealthPercentage <= iSettings.Instance.SignetOfResolvePercentage),
-                new CreateSpellBehavior("Shelter", ctx => ctx.CurrentPlayerHealthPercentage <= iSettings.Instance.ShelterPercentage),
-                new CreateSpellBehavior("Healing Breeze", ctx => ctx.CurrentPlayerHealthPercentage <= iSettings.Instance.HealingBreezePercentage),
-                // Greatsword combat
-                new CreateSpellBehavior("Symbol of Wrath", ctx => ctx.DistanceToTarget <= iSettings.Instance.MininumRange), 
-                new CreateSpellBehavior("Whirling Wrath", ctx => ctx.CountViableEnemies(iSettings.Instance.WhirlingBladeAOERange) > iSettings.Instance.WhirlingBladeAOERange || ctx.CurrentTargetHealthPercentage > 60),
-                new CreateSpellBehavior("Blinding Blade"),
-                new CreateSpellBehavior("Pull", ctx => ctx.DistanceToTarget <= iSettings.Instance.MininumRange),
-                new CreateSpellBehavior("Wrathful Strike"),
-                new CreateSpellBehavior("Vengeful Strike"),
-                // Sword combat
-                new CreateSpellBehavior("Zealot's Defense", ctx => ctx.DistanceToTarget <= iSettings.Instance.MininumRange && ctx.CurrentTargetHealthPercentage > iSettings.Instance.WhirlingBladeSinglePercent),
-                new CreateSpellBehavior("Flashing Blade"),
-                new CreateSpellBehavior("Sword of Wrath"),
-                new CreateSpellBehavior("Sword Arc"),
-                new CreateSpellBehavior("Sword Wave"),
-                // Hammer-Time
-                new CreateSpellBehavior("Ring of Warding"),
-                new CreateSpellBehavior("Banish"),
-                new CreateSpellBehavior("Zealot's Embrace"),
-                new CreateSpellBehavior("Mighty Blow"),
-                new CreateInteractiveSpellBehavior("Symbol of Protection", BuddyGw.Me),
-                new CreateSpellBehavior("Hammer Bash"),
-                new CreateSpellBehavior("Hammer Swing"),
-                // Mace combat
-                new CreateSpellBehavior("Protector's Strike"),
-                new CreateSpellBehavior("Symbol of Faith"),
-                new CreateSpellBehavior("Faithful Strike"),
-                new CreateSpellBehavior("Pure Strike"),
-                new CreateSpellBehavior("True Strike"),
-                // Sceptor combat
-                new CreateSpellBehavior("Chains of Light"),
-                new CreateInteractiveSpellBehavior("Smite", Game.GetBestCluster()), 
-                new CreateSpellBehavior("Orb of Wrath"),
-                // Spear combat
-                new CreateSpellBehavior("Wrathful Grasp"),
-                new CreateSpellBehavior("Spear Wall"),
-                new CreateSpellBehavior("Brilliance"),
-                new CreateSpellBehavior("Zealot's Flurry"),
-                new CreateSpellBehavior("Spear of Light"),
-                // Trident combat
-                new CreateSpellBehavior("Weight of Justice"),
-                new CreateSpellBehavior("Refraction"),
-                new CreateSpellBehavior("Purifying Blast"),
-                new CreateSpellBehavior("Purify"),
-                new CreateSpellBehavior("Light of Judgment"),
-                // Staff combat
-                new CreateInteractiveSpellBehavior("Line of Warding", Game.GetBestCluster(), ctx => ctx.DistanceToTarget > 50), 
-                new CreateSpellBehavior("Empower"),
-                new CreateInteractiveSpellBehavior("Symbol of Swiftness", BuddyGw.Me), 
-                new CreateSpellBehavior("Flash of Light"),
-                new CreateSpellBehavior("Orb of Light"),
-                new CreateSpellBehavior("Wave of Wrath"),
-                // Focus combat
-                new CreateSpellBehavior("Shield of Wrath"),
-                new CreateSpellBehavior("Ray of Judgment"),
-                // Shield combat
-                new CreateSpellBehavior("Shield of Absorption"),
-                new CreateSpellBehavior("Shield of Judgment", ctx => iSettings.Instance.ShieldOfJudgmentAOE > ctx.CountViableEnemies(30f) && iSettings.Instance.ShieldOfJudgmentPercentage > ctx.CurrentPlayerHealthPercentage),
-                // Torch combat
-                new CreateSpellBehavior("Cleansing Flame"),
-                new CreateSpellBehavior("Zealot's Fire"),
-                new CreateSpellBehavior("Zealot's Flame"),
-                // Utility skills (not really implemented, due to lack of stack detection, etc.)
-                new CreateSpellBehavior("Command"),
-                new CreateSpellBehavior("Sword of Justice"),
-                new CreateSpellBehavior("Shield of the Avenger"),
-                new CreateSpellBehavior("Hammer of Wisdom"),
-                new CreateSpellBehavior("Bow of Truth"),
-                new CreateSpellBehavior("Signet of Wrath"),
-                new CreateSpellBehavior("Signet of Mercy"),
-                new CreateSpellBehavior("Signet of Jugdment"),
-                new CreateSpellBehavior("Bane Signet"),
-                new CreateSpellBehavior("\"Stand Your Ground!\""),
-                new CreateSpellBehavior("\"Save Yourselves!\""),
-                new CreateSpellBehavior("\"Retreat!\""),
-                new CreateSpellBehavior("\"Hold the Line!\""),
-                new CreateSpellBehavior("Smite Condition"),
-                new CreateSpellBehavior("Merciful Intervention"),
-                new CreateSpellBehavior("Judge's Intervention", ctx => ctx.CountViableEnemies(1200f) >= iSettings.Instance.JudgeInterventionCount),
-                new CreateSpellBehavior("Contemplation of Purity"),
-                new CreateSpellBehavior("Wall of Reflection", ctx => iSettings.Instance.WallOfReflection ? ctx.DistanceToTarget > 500f : false), 
-                new CreateInteractiveSpellBehavior("Sanctuary", BuddyGw.Me), 
-                new CreateSpellBehavior("Purging Flames", ctx => iSettings.Instance.PurgingFlames ? ctx.Buffs.Count() > iSettings.Instance.PurgingFlamesCount : false), 
-                new CreateSpellBehavior("Hallowed Ground", ctx => iSettings.Instance.HallowedGround ? ctx.HasBuff("Stun") : false),
-                // Downed combat
-                new CreateInteractiveSpellBehavior("Symbol of Judgment", BuddyGw.Me), 
-                new CreateSpellBehavior("Wave of Light"),
-                new CreateSpellBehavior("Wrath"),
-                new CreateSpellBehavior("Bandage"),
-                // Drowning combat
-                new CreateSpellBehavior("Renewing Current"),
-                new CreateSpellBehavior("Reveal the Depths"),
-                new CreateSpellBehavior("Shackle"),
-                new CreateSpellBehavior("Bandage"),
-                // Elite skillz
-                new PrioritySelector(
-                    new CreateSpellBehavior("Judgment"),
-                    new CreateSpellBehavior("Zealot's Fervor"),
-                    new CreateSpellBehavior("Smiter's Boon"),
-                    new CreateSpellBehavior("Affliction"),
-                    new CreateSpellBehavior("Conflagrate")
-                ),
-                new CreateSpellBehavior("Tome of Wrath"),
-                new PrioritySelector(
-                    new CreateSpellBehavior("Light of Deliverance"),
-                    new CreateSpellBehavior("Pacifism"),
-                    new CreateSpellBehavior("Protective Spirit"),
-                    new CreateSpellBehavior("Purifying Ribbon"),
-                    new CreateInteractiveSpellBehavior("Heal Area", BuddyGw.Me) 
-                ),
-                new CreateSpellBehavior("Tome of Courage"),
-                new CreateSpellBehavior("Renewed Focus")
+                Guardian.GuardianCombat()                
                 );
         }
 
         public Composite GuardianBuffs()
         {
-            return new Typhon.BehaviourTree.Action(ctx => RunStatus.Failure);
+            return new PrioritySelector(
+                ctxChanger,
+                // staff
+                new CreateInteractiveSpellBehavior("Symbol of Swiftness", BuddyGw.Me, ctx => BuddyGw.Me.InCombat && ctx.CountViableEnemies(150) < 1)
+                );
         }
 
         public Composite GuardianHealing()
@@ -306,9 +185,9 @@ namespace iGuardian
             return new PrioritySelector(
                 ctxChanger,
                 // staff
-                new CreateSpellBehavior("Line of Warding", ctx => false), 
+                new CreateInteractiveSpellBehavior("Line of Warding", Game.GetBestCluster(), ctx => ctx.DistanceToTarget >= 50), 
                 new CreateSpellBehavior("Empower"),
-                new CreateSpellBehavior("Symbol of Swiftness", ctx => false), 
+                new CreateInteractiveSpellBehavior("Symbol of Swiftness", BuddyGw.Me), 
                 new CreateSpellBehavior("Flash of Light"),
                 new CreateSpellBehavior("Orb of Light"),
                 new CreateSpellBehavior("Wave of Wrath")
