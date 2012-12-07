@@ -47,7 +47,8 @@ namespace iGuardian.Behaviors
 
         public static Composite Elite()
         {
-            return new PrioritySelector(new PrioritySelector(
+            return new PrioritySelector(
+                new PrioritySelector(
                     new CreateSpellBehavior("Judgment"),
                     new CreateSpellBehavior("Zealot's Fervor"),
                     new CreateSpellBehavior("Smiter's Boon"),
@@ -63,7 +64,8 @@ namespace iGuardian.Behaviors
                     new CreateInteractiveSpellBehavior("Heal Area", BuddyGw.Me)
                 ),
                 new CreateSpellBehavior("Tome of Courage"),
-                new CreateSpellBehavior("Renewed Focus"));
+                new CreateSpellBehavior("Renewed Focus"),
+                new CreateSpellBehavior("Reaper of Grenth"));
         }
 
         public static Composite Utilities()
@@ -203,7 +205,7 @@ namespace iGuardian.Behaviors
         public static Composite GreatSword()
         {
             return new PrioritySelector(new CreateSpellBehavior("Symbol of Wrath", ctx => ctx.DistanceToTarget <= iSettings.Instance.MininumRange),
-                new CreateSpellBehavior("Whirling Wrath", ctx => ctx.CountViableEnemies(iSettings.Instance.WhirlingBladeAOERange) > iSettings.Instance.WhirlingBladeAOERange || ctx.CurrentTargetHealthPercentage > 60),
+                new CreateSpellBehavior("Whirling Wrath", ctx => (ctx.CountViableEnemies(iSettings.Instance.WhirlingBladeAOERange) > iSettings.Instance.WhirlingBladeAOERange || ctx.CurrentTargetHealthPercentage > 60) && ctx.DistanceToTarget <= 100),
                 new CreateSpellBehavior("Blinding Blade"),
                 new CreateSpellBehavior("Pull", ctx => ctx.DistanceToTarget <= iSettings.Instance.MininumRange),
                 new CreateSpellBehavior("Wrathful Strike"),
@@ -213,6 +215,9 @@ namespace iGuardian.Behaviors
         #endregion
 
         #region Weapon Switching
+        #endregion
+
+        #region Healing 
         #endregion
     }
 }

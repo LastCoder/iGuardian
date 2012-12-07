@@ -95,12 +95,6 @@ namespace iGuardian
         }
         #endregion
 
-        public static void Log(string message, object arguements, bool debug = false)
-        {
-            message = string.Format(message, arguements);
-            Log(message, debug);
-        }
-
         #region Methods
 
         public void ConfigWindowClosed(object sender, EventArgs args)
@@ -116,35 +110,8 @@ namespace iGuardian
 
         public Composite GuardianPull()
         {
-            if (iSettings.Instance.HealOnly)
-            {
-                return new PrioritySelector(
-                    ctxChanger,
-                    GuardianHealing());
-            }
             return new PrioritySelector(
                 ctxChanger,
-                // Simple, but ugly, run-once action
-                /*new Action(ctx => {
-                    if (!startup)
-                    {
-                        Log("We are switching weapons 2 times to log the current weapon type; this is not an error if it only switches 2 times!");
-                        Primary = BuddyGw.Me.Inventory.CurrentWeaponType;
-                        BuddyGw.Me.SwitchWeapons();
-                        Secondary = BuddyGw.Me.Inventory.CurrentWeaponType;
-                        BuddyGw.Me.SwitchWeapons();
-
-                        if (Primary == WeaponType.Unknown || Secondary == WeaponType.Unknown)
-                        {
-                            Log("Current weapon set is not supported. Please contact {0}.", Author);
-                        }
-
-                        startup = true;
-                    } 
-                }),*/
-                // Weapon switches
-                //new CreateWeaponSwitchBehavior(WeaponType.Scepter, ctx => iSettings.Instance.SceptorPull ? (Primary == WeaponType.Scepter || Secondary == WeaponType.Scepter) : false),
-                // Sceptor pull
                 Movement.MoveIntoRangeBehavior(1200),
                 new CreateSpellBehavior("Orb of Wrath"),
                 // Greatsword pull
@@ -154,7 +121,7 @@ namespace iGuardian
                 new CreateSpellBehavior("Flashing Blade"),
                 // Instigate combat
                 // Regular walk 
-                Movement.MoveIntoRangeBehavior(50f),
+                Movement.MoveIntoRangeBehavior(50),
                 GuardianCombat()
                 );
         }
@@ -163,10 +130,7 @@ namespace iGuardian
         {
             return new PrioritySelector(
                 ctxChanger,
-                //CombatUtilities.CreateWaitForCast(),
-                // Weapon switches
-                //new CreateWeaponSwitchBehavior(WeaponType.Sword, ctx => (Primary == WeaponType.Sword || Secondary == WeaponType.Sword) ? (ctx.CountViableEnemies(300f) < 1 || ctx.CurrentPlayerHealthPercentage < 50) : false),
-                //new CreateWeaponSwitchBehavior(WeaponType.Greatsword, ctx => (Primary == WeaponType.Greatsword|| Secondary == WeaponType.Greatsword) ? (ctx.CurrentPlayerHealthPercentage > 50 || ctx.CountViableEnemies(300f) >= 1) : false),
+                Movement.MoveIntoRangeBehavior(50),
                 Guardian.GuardianCombat()                
                 );
         }
@@ -180,19 +144,6 @@ namespace iGuardian
                 );
         }
 
-        public Composite GuardianHealing()
-        {
-            return new PrioritySelector(
-                ctxChanger,
-                // staff
-                new CreateInteractiveSpellBehavior("Line of Warding", Game.GetBestCluster(), ctx => ctx.DistanceToTarget >= 50), 
-                new CreateSpellBehavior("Empower"),
-                new CreateInteractiveSpellBehavior("Symbol of Swiftness", BuddyGw.Me), 
-                new CreateSpellBehavior("Flash of Light"),
-                new CreateSpellBehavior("Orb of Light"),
-                new CreateSpellBehavior("Wave of Wrath")
-                );
-        }
         #endregion
 
         #region Event Handling
