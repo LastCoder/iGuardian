@@ -15,15 +15,30 @@ namespace iGuardian.Behaviors
     internal class Guardian
     {
 
+        private static readonly ContextChangeHandler ctxChanger = ctx => new RoutineContext();
+
         public static Composite GuardianCombat()
         {
             return new PrioritySelector(
+                ctxChanger,
+                // Standard skills
                 Downed(),
                 Drowning(),
                 Healing(),
                 Elite(),
                 Utilities(),
-                WeaponSkills());
+                // Weapon Skills
+                GreatSword(),
+                Sword(),
+                Torch(),
+                Shield(),
+                Focus(),
+                Staff(),
+                Trident(),
+                Spear(),
+                Sceptor(),
+                Mace(),
+                Hammer());
         }
 
         #region Regular Skills
@@ -48,6 +63,7 @@ namespace iGuardian.Behaviors
         public static Composite Elite()
         {
             return new PrioritySelector(
+                new CreateSpellBehavior("Reaper of Grenth"),
                 new PrioritySelector(
                     new CreateSpellBehavior("Judgment"),
                     new CreateSpellBehavior("Zealot's Fervor"),
@@ -64,13 +80,13 @@ namespace iGuardian.Behaviors
                     new CreateInteractiveSpellBehavior("Heal Area", BuddyGw.Me)
                 ),
                 new CreateSpellBehavior("Tome of Courage"),
-                new CreateSpellBehavior("Renewed Focus"),
-                new CreateSpellBehavior("Reaper of Grenth"));
+                new CreateSpellBehavior("Renewed Focus"));
         }
 
         public static Composite Utilities()
         {
-            return new PrioritySelector(new CreateSpellBehavior("Command"),
+            return new PrioritySelector(
+                new CreateSpellBehavior("Command"),
                 new CreateSpellBehavior("Sword of Justice"),
                 new CreateSpellBehavior("Shield of the Avenger"),
                 new CreateSpellBehavior("Hammer of Wisdom"),
@@ -95,29 +111,13 @@ namespace iGuardian.Behaviors
 
         public static Composite Healing()
         {
-            return new PrioritySelector(new CreateSpellBehavior("Signet of Resolve", ctx => ctx.CurrentPlayerHealthPercentage <= iSettings.Instance.SignetOfResolvePercentage),
-                new CreateSpellBehavior("Shelter", ctx => ctx.CurrentPlayerHealthPercentage <= iSettings.Instance.ShelterPercentage),
-                new CreateSpellBehavior("Healing Breeze", ctx => ctx.CurrentPlayerHealthPercentage <= iSettings.Instance.HealingBreezePercentage));
+            return new PrioritySelector(new CreateSpellBehavior("Signet of Resolve", ctx => ctx.CurrentPlayerHealthPercentage < iSettings.Instance.SignetOfResolvePercentage),
+                new CreateSpellBehavior("Shelter", ctx => ctx.CurrentPlayerHealthPercentage < iSettings.Instance.ShelterPercentage),
+                new CreateSpellBehavior("Healing Breeze", ctx => ctx.CurrentPlayerHealthPercentage < iSettings.Instance.HealingBreezePercentage));
         }
         #endregion 
 
         #region Weapon Skills
-
-        public static Composite WeaponSkills()
-        {
-            return new PrioritySelector(
-                GreatSword(),
-                Sword(),
-                Torch(),
-                Shield(),
-                Focus(),
-                Staff(),
-                Trident(),
-                Spear(),
-                Sceptor(),
-                Mace(),
-                Hammer());
-        }
 
         public static Composite Torch()
         {
@@ -195,7 +195,7 @@ namespace iGuardian.Behaviors
 
         public static Composite Sword()
         {
-            return new PrioritySelector(new CreateSpellBehavior("Zealot's Defense", ctx => ctx.DistanceToTarget <= iSettings.Instance.MininumRange && ctx.CurrentTargetHealthPercentage > iSettings.Instance.WhirlingBladeSinglePercent),
+            return new PrioritySelector(new CreateSpellBehavior("Zealot's Defense", ctx => ctx.DistanceToTarget < iSettings.Instance.MininumRange && ctx.CurrentTargetHealthPercentage > iSettings.Instance.WhirlingBladeSinglePercent),
                 new CreateSpellBehavior("Flashing Blade"),
                 new CreateSpellBehavior("Sword of Wrath"),
                 new CreateSpellBehavior("Sword Arc"),
@@ -204,10 +204,11 @@ namespace iGuardian.Behaviors
 
         public static Composite GreatSword()
         {
-            return new PrioritySelector(new CreateSpellBehavior("Symbol of Wrath", ctx => ctx.DistanceToTarget <= iSettings.Instance.MininumRange),
-                new CreateSpellBehavior("Whirling Wrath", ctx => (ctx.CountViableEnemies(iSettings.Instance.WhirlingBladeAOERange) > iSettings.Instance.WhirlingBladeAOERange || ctx.CurrentTargetHealthPercentage > 60) && ctx.DistanceToTarget <= 100),
+            return new PrioritySelector(
+                new CreateSpellBehavior("Symbol of Wrath", ctx => ctx.DistanceToTarget < iSettings.Instance.MininumRange),
+                new CreateSpellBehavior("Whirling Wrath", ctx => ctx.DistanceToTarget < iSettings.Instance.MininumRange),
                 new CreateSpellBehavior("Blinding Blade"),
-                new CreateSpellBehavior("Pull", ctx => ctx.DistanceToTarget <= iSettings.Instance.MininumRange),
+                new CreateSpellBehavior("Pull", ctx => ctx.DistanceToTarget < iSettings.Instance.MininumRange),
                 new CreateSpellBehavior("Wrathful Strike"),
                 new CreateSpellBehavior("Vengeful Strike"));
         }

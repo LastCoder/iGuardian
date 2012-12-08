@@ -28,6 +28,7 @@ namespace iGuardian.Wrappers
             _buffs = null;
             _UnitPosition = null;
             _FriendlyPosition = null;
+            _distanceToTarget = null;
         }
 
         #region Updatables
@@ -168,6 +169,16 @@ namespace iGuardian.Wrappers
             }
         }
 
+        private float? _distanceToTarget;
+        internal float DistanceToTarget
+        {
+            get
+            {
+
+                return (_distanceToTarget ?? (_distanceToTarget = Calculations.Distance(CurrentPlayerPosition, CurrentTargetPosition))).Value;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -181,12 +192,12 @@ namespace iGuardian.Wrappers
 
         internal int CountViableEnemies(float radius)
         {
-            return UnitPositions.CachedPositions.Where(u => BuddyGw.IsVisible(u.Position) && Vector3.Distance(CurrentPlayerPosition, u.Position) < radius).Count();
+            return UnitPositions.CachedPositions.Where(u => BuddyGw.IsVisible(u.Position) && Calculations.Distance(CurrentPlayerPosition, u.Position) < radius).Count();
         }
 
         internal int CountViableFriendlies(float radius)
         {
-            return FriendlyPositions.CachedPositions.Where(u => BuddyGw.IsVisible(u.Position) && Vector3.Distance(CurrentPlayerPosition, u.Position) < radius).Count();
+            return FriendlyPositions.CachedPositions.Where(u => BuddyGw.IsVisible(u.Position) && Calculations.Distance(CurrentPlayerPosition, u.Position) < radius).Count();
         }
 
         internal List<Gw2Skill> GetBuffs(Gw2Character player)
@@ -217,16 +228,7 @@ namespace iGuardian.Wrappers
             return s;
 
         }
-
-        internal float DistanceToTarget
-        {
-            get
-            {
-
-                return Calculations.Distance(CurrentPlayerPosition, CurrentTargetPosition);
-            }
-        }
-
+        
         #endregion
     }
 }

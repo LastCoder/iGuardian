@@ -13,14 +13,20 @@ namespace iGuardian.Methods
 
         public static float Distance(Vector3 a, Vector3 b)
         {
-            a = Gw2Math.VectorToLarge(a);
-            b = Gw2Math.VectorToLarge(b);
-            if (a == Vector3.Zero || b == Vector3.Zero)
+            float distance = 0;
+            if (b == Vector3.Zero)
             {
+                distance = float.MinValue;
                 Logger.WriteVerbose("Position a: {0}", a);
-                Logger.WriteVerbose("Position b: {1}", b);
+                Logger.WriteVerbose("Position b: {0}", b);
             }
-            return a.Distance(b);
+            else
+            {
+                a = Gw2Math.VectorToLarge(a);
+                b = Gw2Math.VectorToLarge(b);
+                distance = a.Distance(b);
+            }
+            return distance;
         }
 
         public static double CalculateEnemyWeight(Gw2Character character) 
